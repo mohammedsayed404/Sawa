@@ -1,22 +1,31 @@
+using System.Text;
 using API.Data;
+using API.Extensions;
+using API.interfaces;
+using API.services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// ! to make our service with dbcontext injected to all class in our app
-builder.Services.AddDbContext<DataContext>(opt=>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-builder.Services.AddCors();
+
+// ! to make our service with dbcontext injected to all class in our app and make it iton our method extention
+builder.Services.AddApplicationServices(builder.Configuration);
+
+// ? to make our jwt configration scheme and seperated it into method extension
+builder.Services.AddIdentityService(builder.Configuration);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
