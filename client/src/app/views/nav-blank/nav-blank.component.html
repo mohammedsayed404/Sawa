@@ -41,7 +41,7 @@
       </ul>
       <div class="nav-item dropdown cursor-pointer" dropdown>
         <a class="nav-link dropdown-toggle" dropdownToggle>
-          Welcome user
+          Welcome {{(_authService.currentUser$ | async)?.userName | titlecase}}
         </a>
         <ul class="dropdown-menu mt-3"  *dropdownMenu>
           <li><a class="dropdown-item">Edit Profile</a></li>

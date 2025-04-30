@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink} from '@angular/router';
+import { Router} from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IUser } from 'src/app/core/Models/IUser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav-auth',
@@ -21,7 +22,8 @@ export class NavAuthComponent implements OnInit,OnDestroy {
     password:['',[Validators.required]]
   });
 
-  constructor(private _formBuilder:FormBuilder , private _authService:AuthService,private _router:Router) { }
+  constructor(private _formBuilder:FormBuilder ,
+     private _authService:AuthService,private _router:Router , private _toastrService:ToastrService) { }
   ngOnInit(): void {
 
   }
@@ -34,7 +36,7 @@ export class NavAuthComponent implements OnInit,OnDestroy {
           console.log(response);
           this._router.navigate(['/matches']);
         },
-        error:(err)=>console.log(err)
+        error:(err)=> this._toastrService.error(err.error)
       })
     }else{
       loginFormValue.markAllAsTouched();

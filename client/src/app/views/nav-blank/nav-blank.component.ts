@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class NavBlankComponent {
 
 
-  constructor(private _Router:Router, private _authService:AuthService) {
+  constructor(private _Router:Router, public _authService:AuthService) {
 
 
   }

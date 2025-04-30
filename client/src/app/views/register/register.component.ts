@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,8 @@ export class RegisterComponent {
 @Output() cancelRegister:EventEmitter<boolean> = new EventEmitter();
 
 
-  constructor(private _formBuilder:FormBuilder , private _authService:AuthService,private _router:Router) { }
+  constructor(private _formBuilder:FormBuilder ,
+     private _authService:AuthService,private _router:Router , private _toastrService:ToastrService) { }
 
   RegisterSubscription:Subscription = new Subscription();
 
@@ -36,7 +38,7 @@ Register(registerFormValue:FormGroup):void{
         console.log(response);
         this._router.navigate(['/matches']);
       },
-      error:(err)=>console.log(err)
+      error:(err)=>this._toastrService.error(err.error)
     })
   }else{
     registerFormValue.markAllAsTouched();
