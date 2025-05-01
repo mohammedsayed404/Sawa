@@ -12,15 +12,19 @@ const routes: Routes = [
     {path: 'lists',loadComponent:()=>import('./views/lists/lists.component').then((m)=>m.ListsComponent)},
     {path: 'messages',loadComponent:()=>import('./views/messages/messages.component').then((m)=>m.MessagesComponent)},
     {path: 'errors',loadComponent:()=>import('./views/errors/errors.component').then((m)=>m.ErrorsComponent)},
+    {path: 'server-error',loadComponent:()=>import('./views/errors/server-error/server-error.component').then((m)=>m.ServerErrorComponent)},
+    {path:"notfound" , loadComponent:()=>import('./views/not-found/not-found.component').then((m) => m.NotFoundComponent)}
+
   ]},
   {path: '', loadComponent:()=>import('./layouts/auth-layout/auth-layout.component').then((m)=>m.AuthLayoutComponent) , children:[
     {path: '',redirectTo:'home',pathMatch:'full'},
     {path:'home' , loadComponent:()=> import('./views/home/home.component').then((m)=>m.HomeComponent)},
     {path:'register' , loadComponent:()=> import('./views/register/register.component').then((m)=>m.RegisterComponent)},
+    {path:"notfound" , loadComponent:()=>import('./views/not-found/not-found.component').then((m) => m.NotFoundComponent)}
 
   ]},
 
-  {path:"**" , loadComponent:()=>import('./views/errors/errors.component').then((m) => m.ErrorsComponent)}
+   {path:"**" , loadComponent:()=>import('./views/not-found/not-found.component').then((m) => m.NotFoundComponent)}
 ];
 
 @NgModule({

@@ -1,1 +1,20 @@
-<p>errors works!</p>
+<div class="bg-warning p-5">
+  <ng-container>
+    <button class="btn btn-outline-primary mb-2 bg-success text-white me-3" (click)="Get500Error()">Test 500 server Error</button>
+    <button class="btn btn-outline-primary mb-2 bg-success text-white me-3" (click)="Get400Error()">Test 400 Bad Request Error</button>
+    <button class="btn btn-outline-primary mb-2 bg-success text-white me-3" (click)="Get401Error()">Test 401 auth Error</button>
+    <button class="btn btn-outline-primary mb-2 bg-success text-white me-3" (click)="Get404Error()">Test 404 Not Found Error</button>
+    <button class="btn btn-outline-primary mb-2 bg-success text-white me-3"
+    (click)="Get400ValidationError()">Test 400 Validation Error</button>
+
+    <div class="bg-info">
+      <ul class="list-group p-3 " *ngIf="validationErro.length>0">
+        <li class="bg-danger list-group-item" *ngFor="let err of validationErro">
+          {{err}}
+        </li>
+      </ul>
+
+    </div>
+
+    </ng-container>
+</div>

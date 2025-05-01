@@ -36,7 +36,7 @@ export class NavAuthComponent implements OnInit,OnDestroy {
           console.log(response);
           this._router.navigate(['/matches']);
         },
-        error:(err)=> this._toastrService.error(err.error)
+        // error:(err)=> this._toastrService.error(err.error)
       })
     }else{
       loginFormValue.markAllAsTouched();
