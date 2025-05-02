@@ -2,13 +2,14 @@ import { IUser } from './../Models/IUser';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  baseUrl:string = 'https://localhost:5001/api';
+  baseUrl:string = environment.apiUrl;
   private currentUserSource = new BehaviorSubject<IUser | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
@@ -16,7 +17,7 @@ export class AuthService {
 
   setLogin(formData: FormGroup):Observable<IUser>{
     return this._httpclient.post<IUser>(`${this.baseUrl}/account/login`,formData).pipe(
-      map((user:IUser)=>{
+      tap((user:IUser)=>{
         if(user){
           localStorage.setItem("user",JSON.stringify(user));
           this.currentUserSource.next(user);
@@ -31,12 +32,11 @@ export class AuthService {
 
   setRegister(formData:FormGroup):Observable<IUser>{
     return this._httpclient.post<IUser>(`${this.baseUrl}/account/register`,formData).pipe(
-      map((user:IUser)=>{
+      tap((user:IUser)=>{
         if(user){
           localStorage.setItem('user',JSON.stringify(user));
           this.currentUserSource.next(user);
         }
-          return user;
       })
     )
   }

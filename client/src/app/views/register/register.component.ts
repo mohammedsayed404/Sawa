@@ -36,7 +36,7 @@ Register(registerFormValue:FormGroup):void{
     this.RegisterSubscription = this._authService.setRegister(registerFormValue.value).subscribe({
       next:(response)=>{
         console.log(response);
-        this._router.navigate(['/matches']);
+        this._router.navigate(['/members']);
       },
       error:(err)=>this._toastrService.error(err.error)
     })

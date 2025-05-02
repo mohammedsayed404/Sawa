@@ -36,7 +36,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
             case 401:
               this._toastrService.error(
-                'invalid UserName Or Password',
+                'Unauthorized',
                 error.status.toString()
               );
               break;

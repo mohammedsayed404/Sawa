@@ -34,7 +34,7 @@ export class NavAuthComponent implements OnInit,OnDestroy {
       this.loginSubscription = this._authService.setLogin(loginFormValue.value).subscribe({
         next:(response:IUser)=>{
           console.log(response);
-          this._router.navigate(['/matches']);
+          this._router.navigate(['/members']);
         },
         // error:(err)=> this._toastrService.error(err.error)
       })
