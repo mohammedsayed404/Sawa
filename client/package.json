@@ -22,6 +22,7 @@
     "@kolkov/ngx-gallery": "^2.0.1",
     "bootstrap": "^5.3.3",
     "ngx-bootstrap": "^12.0.0",
+    "ngx-spinner": "^19.0.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

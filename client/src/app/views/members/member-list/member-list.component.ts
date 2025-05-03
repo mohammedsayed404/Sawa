@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MembersService } from 'src/app/core/services/members.service';
-import { Subscription } from 'rxjs';
-import { IUser } from 'src/app/core/Models/IUser';
+import { Observable, Subscription } from 'rxjs';
 import { IMember } from 'src/app/core/Models/IMember';
 import { MemberCardComponent } from "../member-card/member-card.component";
 
@@ -14,30 +13,32 @@ import { MemberCardComponent } from "../member-card/member-card.component";
   styleUrls: ['./member-list.component.scss']
 })
 export class MemberListComponent implements OnInit  , OnDestroy{
-members:IMember[] = [];
+// members:IMember[] = [];
+members$:Observable<IMember[]> | undefined;
 
   constructor(private _membersService:MembersService) {}
 
 
   ngOnInit(): void {
-    this.loadMembers();
+    // this.loadMembers();
+    this.members$ = this._membersService.GetMembers();
   }
 
 
-  loadMembersSubscription:Subscription = new Subscription();
+  // loadMembersSubscription:Subscription = new Subscription();
 
 
-  loadMembers():void {
-    this.loadMembersSubscription = this._membersService.GetMembers().subscribe({
-      next: members => this.members = members,
-    });
-  }
+  // loadMembers():void {
+  //   this.loadMembersSubscription = this._membersService.GetMembers().subscribe({
+  //     next: members => this.members = members,
+  //   });
+  // }
 
 
 
 
   ngOnDestroy(): void {
-    this.loadMembersSubscription.unsubscribe();
+    // this.loadMembersSubscription.unsubscribe();
   }
 
 

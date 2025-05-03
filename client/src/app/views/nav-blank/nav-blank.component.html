@@ -44,7 +44,7 @@
           Welcome {{(_authService.currentUser$ | async)?.userName | titlecase}}
         </a>
         <ul class="dropdown-menu mt-3"  *dropdownMenu>
-          <li><a class="dropdown-item">Edit Profile</a></li>
+          <li><a routerLink="member/edit" class="dropdown-item">Edit Profile</a></li>
           <li><a class="dropdown-item" (click)="logout()">logout</a></li>
         </ul>
         </div>

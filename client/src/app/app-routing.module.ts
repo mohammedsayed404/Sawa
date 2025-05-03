@@ -1,3 +1,4 @@
+import { preventUnsavedChangesGuard } from './core/guards/prevent-unsaved-changes.guard';
 import { authGuard } from './core/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,6 +11,7 @@ const routes: Routes = [
     {path: 'members',loadComponent:()=>import('./views/members/member-list/member-list.component').then((m)=>m.MemberListComponent)},
     // {path: 'members/:id',loadComponent:()=>import('./views/members/member-details/member-details.component').then((m)=>m.MemberDetailsComponent)},
     {path: 'members/:username',loadComponent:()=>import('./views/members/member-details/member-details.component').then((m)=>m.MemberDetailsComponent)},
+    {path: 'member/edit',canDeactivate:[preventUnsavedChangesGuard],loadComponent:()=>import('./views/members/member-edit/member-edit.component').then((m)=>m.MemberEditComponent)},
     {path: 'lists',loadComponent:()=>import('./views/lists/lists.component').then((m)=>m.ListsComponent)},
     {path: 'messages',loadComponent:()=>import('./views/messages/messages.component').then((m)=>m.MessagesComponent)},
     {path: 'errors',loadComponent:()=>import('./views/errors/errors.component').then((m)=>m.ErrorsComponent)},
