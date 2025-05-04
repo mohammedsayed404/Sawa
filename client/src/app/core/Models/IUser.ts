@@ -1,4 +1,5 @@
 export interface IUser{
   userName:string,
-  token:string
+  token:string,
+  photoUrl:string
 }

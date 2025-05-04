@@ -3,6 +3,7 @@ using System.Text;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,13 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
-        public AccountController(DataContext context, ITokenService tokenService)
+        private readonly IUserRepository _userRepository;
+
+        public AccountController(DataContext context, ITokenService tokenService , IUserRepository userRepository)
         {
             _context = context;
             _tokenService = tokenService;
+            _userRepository = userRepository;
         }
 
         // ! to make register  post: api/account/register
@@ -38,14 +42,17 @@ namespace API.Controllers
             return new UserDto
             {
                 UserName = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
             };
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(user => user.UserName == loginDto.UserName);
+            // var user = await _context.Users.SingleOrDefaultAsync(user => user.UserName == loginDto.UserName);
+            
+            var user = await _userRepository.GetUserByUserNameAsync(loginDto.UserName);
+
             if (user == null) return Unauthorized("invalid username");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -60,7 +67,8 @@ namespace API.Controllers
             return new UserDto
             {
                 UserName = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(photo => photo.IsMain)?.Url
             };
 
         }

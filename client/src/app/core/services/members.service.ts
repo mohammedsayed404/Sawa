@@ -9,8 +9,8 @@ import { IMember } from '../Models/IMember';
   providedIn: 'root'
 })
 export class MembersService {
-  baseUrl:string  = environment.apiUrl;
-  members:IMember[] = [];
+  private readonly baseUrl:string  = environment.apiUrl;
+  private members:IMember[] = [];
   constructor(private _httpClient:HttpClient) { }
 
 
@@ -33,6 +33,14 @@ GetMemberById(id:number):Observable<IMember>{
 }
 UpdateMember(member:IMember):Observable<IMember>{
   return this._httpClient.put<IMember>(`${this.baseUrl}/users`, member);
+}
+
+SetMainPhoto(photoId:number):Observable<any>{
+  return this._httpClient.put(`${this.baseUrl}/users/set-main-photo/${photoId}`,{});
+}
+
+DeletePhoto(photoId:number):Observable<any>{
+  return this._httpClient.delete(`${this.baseUrl}/users/delete-photo/${photoId}`,{});
 }
 
 }

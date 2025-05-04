@@ -39,15 +39,24 @@
         </li>
 
       </ul>
-      <div class="nav-item dropdown cursor-pointer" dropdown>
+      <div class="nav-item dropdown cursor-pointer d-flex justify-content-center align-items-center"
+          dropdown *ngIf="(_authService.currentUser$ | async) as user">
+
+        <div class="me-3">
+        <img src="{{user.photoUrl || './assets/user.png' }}" [alt]="user.userName">
+
+        </div>
+
+        <div>
         <a class="nav-link dropdown-toggle" dropdownToggle>
-          Welcome {{(_authService.currentUser$ | async)?.userName | titlecase}}
+          Welcome {{ user.userName | titlecase}}
         </a>
         <ul class="dropdown-menu mt-3"  *dropdownMenu>
           <li><a routerLink="member/edit" class="dropdown-item">Edit Profile</a></li>
           <li><a class="dropdown-item" (click)="logout()">logout</a></li>
         </ul>
         </div>
+       </div>
 
 
     </div>

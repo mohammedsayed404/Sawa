@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  baseUrl:string = environment.apiUrl;
+  private readonly baseUrl:string = environment.apiUrl;
   private currentUserSource = new BehaviorSubject<IUser | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
@@ -18,11 +18,8 @@ export class AuthService {
   setLogin(formData: FormGroup):Observable<IUser>{
     return this._httpclient.post<IUser>(`${this.baseUrl}/account/login`,formData).pipe(
       tap((user:IUser)=>{
-        if(user){
-          localStorage.setItem("user",JSON.stringify(user));
-          this.currentUserSource.next(user);
-        }
-        return user;
+        if(user)
+          this.setCurrentUser(user);
       })
 
 
@@ -33,15 +30,14 @@ export class AuthService {
   setRegister(formData:FormGroup):Observable<IUser>{
     return this._httpclient.post<IUser>(`${this.baseUrl}/account/register`,formData).pipe(
       tap((user:IUser)=>{
-        if(user){
-          localStorage.setItem('user',JSON.stringify(user));
-          this.currentUserSource.next(user);
-        }
+        if(user)
+          this.setCurrentUser(user);
       })
     )
   }
 
   setCurrentUser(user:IUser):void{
+    localStorage.setItem("user",JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
