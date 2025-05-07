@@ -1,0 +1,31 @@
+<div class="mb-3">
+  <div class="input-group">
+    <span class="input-group-text">
+      <i *ngIf="label === 'username'" class="fa fa-user"></i>
+      <i *ngIf="label === 'password'" class="fa fa-lock"></i>
+      <i *ngIf="label === 'confim password'" class="fa fa-key"></i>
+      <i *ngIf="label === 'know As'" class="fa fa-user-tag"></i>
+      <i *ngIf="label === 'City'" class="fa fa-city"></i>
+      <i *ngIf="label === 'Country'" class="fa fa-globe"></i>
+    </span>
+    <input
+        [id]="label"
+        type={{type}}
+        [formControl]="Control"
+        [class.is-invalid]="(Control.invalid && Control.touched)"
+        class="form-control"
+        placeholder={{label}}
+      >
+      <div *ngIf="Control.errors?.['required']" class="invalid-feedback">please enter a {{label}}</div>
+      <div class="invalid-feedback" *ngIf="Control. errors ?. ['minlength' ]">
+        {{label}} must be at least {{Control.errors ?. ['minlength' ] . requiredLength}} characters
+      </div>
+      <div class="invalid-feedback" *ngIf="Control.errors ?. ['maxlength']">
+        {{label}} must be at most {{Control. errors ?. ['maxlength' ] . requiredLength}} characters
+      </div>
+      <div class="invalid-feedback" *ngIf="Control.errors ?. ['notMatching']">
+        confirm password must match password
+      </div>
+    </div>
+
+</div>

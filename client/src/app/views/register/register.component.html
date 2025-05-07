@@ -1,29 +1,50 @@
 <div class="container mt-5 d-flex justify-content-center">
   <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
     <h4 class="card-title text-center mb-4">Register</h4>
-    <form [formGroup]="registerForm" (ngSubmit)="Register(registerForm)">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <div class="input-group">
-          <span class="input-group-text">
-            <i class="fa fa-user"></i>
-          </span>
-          <input formControlName="username" id="username" class="form-control" type="text" placeholder="Enter username">
-        </div>
-      </div>
+    <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && Register(registerForm)">
+
 
       <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <div class="input-group">
-          <span class="input-group-text">
-            <i class="fa fa-lock"></i>
-          </span>
-          <input formControlName="password" id="password" class="form-control" type="password" placeholder="Enter password">
-        </div>
+        <label style="margin-right: 10px">I am a: </label>
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" value="male" formControlName="gender"> Male
+        </label>
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input ms-3" value="female" formControlName="gender"> Female
+        </label>
       </div>
 
-      <div class="d-grid">
-        <button type="submit" class="btn btn-success mb-2">
+
+      <app-text-input [formControl]="$any(registerForm.get('username'))" [label]="'username'"
+        [type]="'text'"></app-text-input>
+      <app-text-input [formControl]="$any(registerForm.get('knowAs'))" [label]="'know As'"
+        [type]="'text'"></app-text-input>
+      <app-data-picker [formControl]="$any(registerForm.get('dateOfBirth'))" [label]="'Date of Birth'"
+       [maxDate]="maxDate" ></app-data-picker>
+      <app-text-input [formControl]="$any(registerForm.get('city'))" [label]="'City'"
+        [type]="'text'"></app-text-input>
+      <app-text-input [formControl]="$any(registerForm.get('country'))" [label]="'Country'"
+        [type]="'text'"></app-text-input>
+
+      <app-text-input [formControl]="$any(registerForm.get('password'))" [label]="'password'"
+        [type]="'password'"></app-text-input>
+
+      <app-text-input [formControl]="$any(registerForm.get('confirmPassword'))" [label]="'confim password'"
+        [type]="'password'"></app-text-input>
+
+
+
+        <div class="row" *ngIf="validationErrors">
+          <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+              {{error}}
+            </li>
+          </ul>
+        </div>
+
+
+        <div class="d-grid">
+        <button [disabled]="!registerForm.valid" type="submit" class="btn btn-success mb-2">
           <i class="fa fa-right-to-bracket me-2"></i> Register
         </button>
 
@@ -34,3 +55,7 @@
     </form>
   </div>
 </div>
+
+<!--
+<p>{{registerForm.value | json }}</p>
+<p>{{registerForm.status | json}}</p> -->

@@ -1,0 +1,21 @@
+<div class="mb-3">
+  <div class="input-group">
+    <span class="input-group-text">
+      <i class="fa fa-calendar"></i>
+
+    </span>
+  <input
+      type="text"
+      [class.is-invalid]="Control. touched && Control. invalid"
+      class="form-control"
+      [formControl]="Control"
+      placeholder="{{label}}"
+      bsDatepicker
+      [bsConfig]="bsConfig"
+      [maxDate]="maxDate"
+      >
+  <div *ngIf="Control.errors ?. ['required' ]" class="invalid-feedback">
+  {{label}} is required
+  </div>
+</div>
+  </div>

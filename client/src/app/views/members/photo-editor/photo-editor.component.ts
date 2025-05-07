@@ -85,7 +85,12 @@ constructor(private _authService:AuthService , private _membersService:MembersSe
    this.uploader.onSuccessItem = (items,response,status,headers) =>{
       if(response){
         const photo:IPhoto = JSON.parse(response);
-        this.member?.photos.push(photo)
+        this.member?.photos.push(photo);
+        if(photo.isMain && this.user && this.member){
+          this.user.photoUrl = photo.url;
+          this.member.photoUrl = photo.url;
+          this._authService.setCurrentUser(this.user);
+        }
       }
    }
   }
