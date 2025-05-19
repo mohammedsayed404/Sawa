@@ -10,7 +10,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
-
+import { TimeagoModule } from "ngx-timeago";
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     HttpClientModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
+    TimeagoModule.forRoot()
 ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

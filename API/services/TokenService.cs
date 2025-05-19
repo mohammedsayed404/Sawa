@@ -22,7 +22,8 @@ namespace API.services
         {
             //todo claims about our torke user 
             var claims = new List<Claim>{
-                new Claim(JwtRegisteredClaimNames.NameId,user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId,user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName,user.UserName)
             };
             // todoe our creds to our key 
             var creds = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helper;
 using API.interfaces;
 using AutoMapper;
 using Humanizer;
@@ -25,8 +26,21 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<MemberDto>>> GetUsers()
-            => Ok(await _userRepository.GerMembersAsync());
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
+        {
+
+            var CurrentUser = await _userRepository.GetUserByUserNameAsync(User.GetUserName());
+            userParams.CurrentUserName = CurrentUser.UserName;
+
+            if (string.IsNullOrWhiteSpace(userParams.Gender))
+                userParams.Gender = CurrentUser.Gender == "male" ? "female" : "male";
+
+            var users = await _userRepository.GerMembersAsync(userParams);
+
+            Response.AddPaginationHeader(
+                new PaginationHeader(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages));   
+             return Ok(users);
+        }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MemberDto>> GetUser(int id)

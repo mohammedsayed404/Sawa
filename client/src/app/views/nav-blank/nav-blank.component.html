@@ -49,7 +49,7 @@
 
         <div>
         <a class="nav-link dropdown-toggle" dropdownToggle>
-          Welcome {{ user.userName | titlecase}}
+          Welcome {{ user.knownAs | titlecase}}
         </a>
         <ul class="dropdown-menu mt-3"  *dropdownMenu>
           <li><a routerLink="member/edit" class="dropdown-item">Edit Profile</a></li>
