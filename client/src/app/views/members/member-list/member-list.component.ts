@@ -46,6 +46,8 @@ genderList = [{value:'male' , display:'Males'},{value:'female' , display:'Female
         if(response.result && response.pagination)
           this.members = response.result;
           this.pagination = response.pagination;
+          // console.log(this.pagination);
+
          this.cd.detectChanges(); // to make it scan again after updated my array of members
 
       },

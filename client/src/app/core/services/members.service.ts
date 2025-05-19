@@ -113,9 +113,20 @@ SetMainPhoto(photoId:number):Observable<any>{
 }
 
 DeletePhoto(photoId:number):Observable<any>{
-  return this._httpClient.delete(`${this.baseUrl}/users/delete-photo/${photoId}`,{});
+  return this._httpClient.delete(`${this.baseUrl}/users/delete-photo/${photoId}`);
 }
 
+AddLike(username:string):Observable<any>{
+return this._httpClient.post(`${this.baseUrl}/likes/${username}`,{});
+}
+
+GetLikes(predicate:string ,pageNumber:number,PageSize:number  ):Observable<PaginatedResult<IMember[]>>{
+
+  let params = this.getPaginationHeaders(pageNumber,PageSize)
+                    .append('predicate',predicate);
+
+  return this.getPaginatedResult<IMember[]>(`${this.baseUrl}/likes`,params);
+}
 
 
   private getPaginatedResult<TData>(url:string , params: HttpParams): Observable<PaginatedResult<TData>> {

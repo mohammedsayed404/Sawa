@@ -23,7 +23,7 @@ namespace API.Helper
 
             var userRepo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
 
-            var user = await userRepo.GetUserByIdAsync(int.Parse(userId));
+            var user = await userRepo.GetUserByIdAsync(userId);
 
             if (user is null) return;
 
