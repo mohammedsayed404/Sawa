@@ -6,7 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
-import { map, Observable, of, tap , take } from 'rxjs';
+import { Observable, of, tap , take } from 'rxjs';
+import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
 @Injectable({
   providedIn: 'root'
@@ -62,14 +63,14 @@ GetMembers(userParams:UserParams):Observable<PaginatedResult<IMember[]>>{
   if(response) return of(response);
 
 
-  let params = this.getPaginationHeaders(userParams.pageNumber,userParams.pageSize)
+  let params = getPaginationHeaders(userParams.pageNumber,userParams.pageSize)
                     .append('minAge',userParams.minAge)
                     .append('maxAge',userParams.maxAge)
                     .append('gender',userParams.gender)
                     .append('orderBy',userParams.orderBy);
 
 
-  return this.getPaginatedResult<IMember[]>(`${this.baseUrl}/users`,params).pipe(
+  return getPaginatedResult<IMember[]>(`${this.baseUrl}/users`,params,this._httpClient).pipe(
     tap(response => this.membersCache.set(responseKey,response))
   );
 
@@ -101,9 +102,11 @@ if(member) return of(member);
 
   return this._httpClient.get<IMember>(`${this.baseUrl}/users/${username}`);
 }
+
 GetMemberById(id:number):Observable<IMember>{
   return this._httpClient.get<IMember>(`${this.baseUrl}/users/${id}`);
 }
+
 UpdateMember(member:IMember):Observable<IMember>{
   return this._httpClient.put<IMember>(`${this.baseUrl}/users`, member);
 }
@@ -122,37 +125,13 @@ return this._httpClient.post(`${this.baseUrl}/likes/${username}`,{});
 
 GetLikes(predicate:string ,pageNumber:number,PageSize:number  ):Observable<PaginatedResult<IMember[]>>{
 
-  let params = this.getPaginationHeaders(pageNumber,PageSize)
+  let params = getPaginationHeaders(pageNumber,PageSize)
                     .append('predicate',predicate);
 
-  return this.getPaginatedResult<IMember[]>(`${this.baseUrl}/likes`,params);
+  return getPaginatedResult<IMember[]>(`${this.baseUrl}/likes`,params,this._httpClient);
 }
 
 
-  private getPaginatedResult<TData>(url:string , params: HttpParams): Observable<PaginatedResult<TData>> {
-  const paginatedResult:PaginatedResult<TData> = new PaginatedResult<TData>();
-
-    return this._httpClient.get<TData>(url, { observe: 'response', params }).pipe(
-      map(reponse => {
-        if (reponse.body)
-          paginatedResult.result = reponse.body;
-
-        const pagination = reponse.headers.get('Pagination');
-        if (pagination)
-          paginatedResult.pagination = JSON.parse(pagination);
-
-        return paginatedResult;
-      })
-
-    );
-  }
-
-  private getPaginationHeaders(pageNumber:number,PageSize:number ) {
-    let params = new HttpParams();
-      params = params.append('pageNumber', pageNumber)
-                      .append('pageSize', PageSize);
-    return params;
-  }
 
 
 }

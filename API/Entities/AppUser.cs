@@ -25,6 +25,10 @@ namespace API.Entities
 
 
 
+        public ICollection<Message> MessagesSent { get; set; } = new HashSet<Message>(); //sent
+        public ICollection<Message> MessagesReceived { get; set; } = new HashSet<Message>(); //recived
+
+
         // public int GetAge()
         //     => DateOfBirth.CalculateAge();
 

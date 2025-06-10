@@ -28,10 +28,30 @@ namespace API.Data
                 .HasForeignKey(userLike => userLike.TargetUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
+            //sender --------- reciver
+            //     
+
+            modelBuilder.Entity<Message>()
+                    .HasOne(message => message.Recipient)
+                    .WithMany(recipient => recipient.MessagesReceived)
+                    .HasForeignKey(message => message.RecipientId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+
+
+            modelBuilder.Entity<Message>()
+                    .HasOne(message => message.Sender)
+                    .WithMany(Sender => Sender.MessagesSent)
+                    .HasForeignKey(message => message.SenderId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+
         }
 
         public DbSet<AppUser> Users => Set<AppUser>();
         public DbSet<UserLike> Likes => Set<UserLike>();
+        public DbSet<Message> Messages => Set<Message>();
 
 
 
