@@ -2,6 +2,7 @@ using API.Data;
 using API.Helper;
 using API.interfaces;
 using API.services;
+using API.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
@@ -24,6 +25,8 @@ namespace API.Extensions
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.Configure<CloudinarySettings>
                 (config.GetSection(nameof(CloudinarySettings)));
+            services.AddSignalR();
+            services.AddSingleton<PresenceTracker>();    
 
 
             return services;

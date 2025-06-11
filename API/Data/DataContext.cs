@@ -52,6 +52,8 @@ namespace API.Data
         public DbSet<AppUser> Users => Set<AppUser>();
         public DbSet<UserLike> Likes => Set<UserLike>();
         public DbSet<Message> Messages => Set<Message>();
+        public DbSet<Group> Groups => Set<Group>();
+        public DbSet<Connection> Connections => Set<Connection>();
 
 
 

@@ -1,11 +1,11 @@
 <div class="card">
   <div class="card-body">
-    <div *ngIf="messages. length === 0">
+    <div *ngIf="(_messageService.messagesThread$ | async )?.length === 0 ">
       No messages yet ... say hi by using the message box below
     </div>
 
-    <ul *ngIf="messages. length > 0" class="chat">
-      <li *ngFor="let message of messages">
+    <ul *ngIf="(_messageService.messagesThread$ | async )!.length > 0 " class="chat">
+      <li *ngFor="let message of (_messageService.messagesThread$ | async ) ">
         <div>
           <span class="chat-img float-end">
             <img class="rounded-circle" src="{{message. senderPhotoUrl || './assets/user.png' }}" alt="image of user">
@@ -15,11 +15,11 @@
           <div class="chat-body">
             <div class="header">
               <small class="text-muted">
-                <span class="fw-bolder"><i class="fas fa-clock me-1"></i>{{message.messageSent+'Z' | timeago}} </span>
-                <span class="text-danger" *ngIf="!message.dateRead && message.senderUsername !== username"> <!-- show msg that i send readed or not  -->
+                <span class="fw-bolder"><i class="fas fa-clock me-1"></i>{{message.messageSent | timeago}} </span>
+                <span class="text-danger" *ngIf="!message.dateRead && message.senderUsername !== username">
                   (unread)</span>
                 <span class="text-success" *ngIf="message.dateRead && message.senderUsername !== username">
-                  (read {{message.dateRead + 'Z' | timeago}})</span>
+                  (read {{message.dateRead | timeago}})</span>
               </small>
             </div>
             <p>{{message.content}}</p>
@@ -44,3 +44,54 @@
     </div>
   </form>
 </div>
+
+<!-- <div class="card border-0 h-100 d-flex flex-column">
+  <div class="card-body overflow-auto" style="max-height: 55vh;">
+    <div *ngIf="(_messageService.messagesThread$ | async)?.length === 0" class="text-center text-muted">
+      No messages yet... say hi using the message box below
+    </div>
+
+    <ul *ngIf="(_messageService.messagesThread$ | async)!.length > 0" class="list-unstyled">
+      <li *ngFor="let message of (_messageService.messagesThread$ | async)" class="mb-3">
+        <div class="d-flex" [ngClass]="{'flex-row-reverse': message.senderUsername !== username}">
+          <img
+            [src]="message.senderPhotoUrl || './assets/user.png'"
+            alt="User"
+            class="rounded-circle me-2"
+            style="width: 40px; height: 40px; object-fit: cover;"
+          />
+
+          <div class="bg-light rounded px-3 py-2 position-relative">
+            <div class="small text-muted mb-1 d-flex align-items-center">
+              <i class="fas fa-clock me-1"></i>
+              {{ message.messageSent | timeago }}
+              <span *ngIf="!message.dateRead && message.senderUsername !== username" class="text-danger ms-2">
+                (unread)
+              </span>
+              <span *ngIf="message.dateRead && message.senderUsername !== username" class="text-success ms-2">
+                (read {{ message.dateRead | timeago }})
+              </span>
+            </div>
+            <p class="mb-0">{{ message.content }}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-footer bg-white border-top">
+    <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off">
+      <div class="input-group">
+        <input
+          name="messageContent"
+          [(ngModel)]="messageContent"
+          required
+          type="text"
+          class="form-control"
+          placeholder="Type your message here..."
+        />
+        <button [disabled]="!messageForm.valid" class="btn btn-primary" type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+</div> -->

@@ -1,6 +1,7 @@
 using API.Data;
 using API.Extensions;
 using API.Middlewares;
+using API.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         await context.Database.MigrateAsync();
+        // await context.Database.ExecuteSqlAsync($"TRUNCATE TABLE Connections");//not work with sqlite
+        await context.Database.ExecuteSqlAsync($"DELETE FROM  Connections");
         await Seed.SeedUsers(context);
     }
     catch (Exception ex)
@@ -35,11 +38,16 @@ using (var scope = app.Services.CreateScope())
 
 app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+app.UseCors(builder => builder.AllowAnyHeader()
+.AllowAnyMethod()
+.AllowCredentials()
+.WithOrigins("http://localhost:4200"));
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 
 app.Run();

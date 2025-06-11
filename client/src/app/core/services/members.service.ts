@@ -33,7 +33,7 @@ export class MembersService {
         })
 
 
-   }
+  }
 
 getUserParams():UserParams  |undefined {
   return this.userParams;
